@@ -4,8 +4,12 @@ const chalk = require('chalk')
 
 module.exports = {
     start: async (optionalCommands) => {
-        if (optionalCommands.includes('--reset'))
+        let isNewSetup = false
+        if (optionalCommands.includes('--reset')) {
+            isNewSetup = true
             config.setAwsCreds(null)
+            config.setRepos(null)
+        }
         
         if (config.getAwsCreds()) return
         
@@ -18,7 +22,7 @@ module.exports = {
         config.setBaseWorkdir(awsCreds.baseWorkdir)
 
         const repositories = config.getRepos() || []
-        let isNewSetup = !repositories.length
+        if (!isNewSetup) isNewSetup = !repositories.length
         while (isNewSetup) {
             const data = await inquirer.askRepositoryPath()
             if (data.repository) {
