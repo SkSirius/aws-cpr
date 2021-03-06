@@ -46,6 +46,7 @@ module.exports = {
     },
 
     createPRs: async (prRepositories) => {
+        const cCommit = codeCommit()
         const urls = []
         for (let i = 0; i < prRepositories.length; i++) {
             console.log(chalk.greenBright(`${i + 1} / ${prRepositories.length}. Creating PR for ${prRepositories[i].repository}`))
@@ -53,7 +54,7 @@ module.exports = {
             spinner = new Spinner('Making PR request, please wait...')
             spinner.start()
             try {
-                const prData = await codeCommit.createPr(data, prRepositories[i].repository)
+                const prData = await cCommit.createPr(data, prRepositories[i].repository)
                 spinner.stop()
 
                 const url = `https://console.aws.amazon.com/codesuite/codecommit/repositories/${prRepositories[i].repository}/pull-requests/${prData.pullRequest.pullRequestId}?region=${creds.awsRegion}`
