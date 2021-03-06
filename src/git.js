@@ -22,7 +22,7 @@ module.exports = {
             process.chdir(repoDir)
             buildCmd = 'npm run lerna:clean; npm run lerna:bootstrap; npm run lerna:build;'
             exec(buildCmd, { encoding: 'utf-8'}, (err, stdout, stderr) => {
-                process.chdir(workdir)
+                process.chdir(conf.getBaseWorkdir())
                 cb(err, stdout, stderr)
             })
         } else {
@@ -30,7 +30,7 @@ module.exports = {
             const buildCmd = 'npm run build'
             exec('rm -rf dist', {}, () => {
                 exec(buildCmd, { encoding: 'utf-8' }, (err, stdout, stderr) => {
-                    process.chdir(workdir) 
+                    process.chdir(conf.getBaseWorkdir()) 
                     cb(err, stdout, stderr)
                 })
             })
